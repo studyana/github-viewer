@@ -4,8 +4,7 @@ import { useEffect } from "react";
 import { getUserRepos } from "@/services/githubService";
 const Home = () => {
   useEffect(() => {
-    const data = getUserRepos("studyan");
-    console.log("key:", `${process.env.REACT_APP_GITHUB_TOKEN}`);
+    const data = getUserRepos("studyana");
     console.log("data:", data);
   }, []);
   return <div className={styles.page}> hhh</div>;
