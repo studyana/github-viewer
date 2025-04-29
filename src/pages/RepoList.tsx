@@ -5,6 +5,9 @@ import { GitHubRepo } from "@/types/github";
 import { useState } from "react";
 import { getUserRepos } from "@/services/githubService";
 import { useNavigate } from "react-router-dom";
+import formatDate from "@/utils/formatDate";
+import styles from "./RepoList.module.css";
+import { clearRepos, getRepos, setRepos as _setRepos } from "@/utils/repoUtil";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -43,35 +46,57 @@ const columns: TableColumnsType<GitHubRepo> = [
 
 const RepoList: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<GitHubRepo[]>([]);
-  const [username, setUsername] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<GitHubRepo[]>(getRepos() || []);
+  const [username, setUsername] = useState<string>(
+    getRepos()[0]?.owner?.login || ""
+  );
   const handleSearch = async (username: string) => {
+    clearRepos();
+    setLoading(true);
     try {
       const repos = await getUserRepos(username);
+      repos.map((repo) => {
+        repo.updated_at = formatDate(repo.updated_at);
+        return repo;
+      });
       setData(repos);
+      _setRepos(repos);
     } catch (error) {
+      if (error instanceof Error) setError(error.message);
+      else setError("Unknown error");
       console.error("Error fetching repos:", error);
     }
+    setLoading(false);
   };
   return (
     <>
-      <div>
+      <div className={styles.searchSection}>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter GitHub username"
         />
-        <button onClick={() => handleSearch(username)}>搜索</button>
+        <button
+          onClick={() => handleSearch(username)}
+          disabled={!username || loading}
+        >
+          {loading ? "Loading..." : "Search"}
+        </button>
       </div>
-      <Table<GitHubRepo>
-        rowKey="id"
-        columns={columns}
-        dataSource={data}
-        onRow={(record) => ({
-          onClick: () => navigate(`/${record.owner.login}/${record.name}`),
-        })}
-      />
+      {error && <div>Error: {error}</div>}
+      {!error && (
+        <Table<GitHubRepo>
+          rowKey="id"
+          columns={columns}
+          dataSource={data}
+          onRow={(record) => ({
+            onClick: () => navigate(`/${record.owner.login}/${record.name}`),
+          })}
+        />
+      )}
     </>
   );
 };
