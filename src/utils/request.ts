@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: 10000,
   headers: {
     Accept: "application/vnd.github.v3+json",
-    Authorization: `${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
   },
 });
 // 请求拦截器
