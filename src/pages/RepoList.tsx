@@ -5,6 +5,7 @@ import { GitHubRepo } from "@/types/github";
 import { useState } from "react";
 import { getUserRepos } from "@/services/githubService";
 import { useNavigate } from "react-router-dom";
+import formatDate from "@/utils/formatDate";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -48,6 +49,10 @@ const RepoList: React.FC = () => {
   const handleSearch = async (username: string) => {
     try {
       const repos = await getUserRepos(username);
+      repos.map((repo) => {
+        repo.updated_at = formatDate(repo.updated_at);
+        return repo;
+      });
       setData(repos);
     } catch (error) {
       console.error("Error fetching repos:", error);
