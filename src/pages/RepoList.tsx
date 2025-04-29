@@ -44,9 +44,12 @@ const columns: TableColumnsType<GitHubRepo> = [
 
 const RepoList: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<GitHubRepo[]>([]);
   const [username, setUsername] = useState<string>("");
   const handleSearch = async (username: string) => {
+    setLoading(true);
     try {
       const repos = await getUserRepos(username);
       repos.map((repo) => {
@@ -55,8 +58,11 @@ const RepoList: React.FC = () => {
       });
       setData(repos);
     } catch (error) {
+      if (error instanceof Error) setError(error.message);
+      else setError("Unknown error");
       console.error("Error fetching repos:", error);
     }
+    setLoading(false);
   };
   return (
     <>
@@ -67,16 +73,24 @@ const RepoList: React.FC = () => {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter GitHub username"
         />
-        <button onClick={() => handleSearch(username)}>搜索</button>
+        <button
+          onClick={() => handleSearch(username)}
+          disabled={!username || loading}
+        >
+          {loading ? "Loading..." : "Search"}
+        </button>
       </div>
-      <Table<GitHubRepo>
-        rowKey="id"
-        columns={columns}
-        dataSource={data}
-        onRow={(record) => ({
-          onClick: () => navigate(`/${record.owner.login}/${record.name}`),
-        })}
-      />
+      {error && <div>Error: {error}</div>}
+      {!error && (
+        <Table<GitHubRepo>
+          rowKey="id"
+          columns={columns}
+          dataSource={data}
+          onRow={(record) => ({
+            onClick: () => navigate(`/${record.owner.login}/${record.name}`),
+          })}
+        />
+      )}
     </>
   );
 };
