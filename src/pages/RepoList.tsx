@@ -7,6 +7,7 @@ import { getUserRepos } from "@/services/githubService";
 import { useNavigate } from "react-router-dom";
 import formatDate from "@/utils/formatDate";
 import styles from "./RepoList.module.css";
+import { clearRepos, getRepos, setRepos as _setRepos } from "@/utils/repoUtil";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -47,9 +48,12 @@ const RepoList: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<GitHubRepo[]>([]);
-  const [username, setUsername] = useState<string>("");
+  const [data, setData] = useState<GitHubRepo[]>(getRepos() || []);
+  const [username, setUsername] = useState<string>(
+    getRepos()[0]?.owner?.login || ""
+  );
   const handleSearch = async (username: string) => {
+    clearRepos();
     setLoading(true);
     try {
       const repos = await getUserRepos(username);
@@ -58,6 +62,7 @@ const RepoList: React.FC = () => {
         return repo;
       });
       setData(repos);
+      _setRepos(repos);
     } catch (error) {
       if (error instanceof Error) setError(error.message);
       else setError("Unknown error");
