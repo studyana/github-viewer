@@ -6,6 +6,7 @@ import { useState } from "react";
 import { getUserRepos } from "@/services/githubService";
 import { useNavigate } from "react-router-dom";
 import formatDate from "@/utils/formatDate";
+import styles from "./RepoList.module.css";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -66,7 +67,7 @@ const RepoList: React.FC = () => {
   };
   return (
     <>
-      <div>
+      <div className={styles.searchSection}>
         <input
           type="text"
           value={username}
