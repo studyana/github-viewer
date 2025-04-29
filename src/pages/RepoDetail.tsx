@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getRepoDetails } from "@/services/githubService";
+import styles from "./RepoDetail.module.css";
 const RepoDetail = () => {
   const { owner, repo } = useParams<{ owner: string; repo: string }>();
   const [repoDetail, setRepoDetail] = useState<GitHubRepoDetail | null>(null);
@@ -19,17 +20,17 @@ const RepoDetail = () => {
     fetchrepoDetail();
   }, [owner, repo]);
   if (!repoDetail) {
-    return <div>Loading...</div>;
+    return <div className={styles.loading}>Loading...</div>;
   }
   return (
     <>
-      <div className="repo-detail">
-        <header className="repo-header">
-          <div className="owner-info">
+      <div className={styles.repoDetail}>
+        <header className={styles.repoHeader}>
+          <div className={styles.ownerInfo}>
             <img
               src={repoDetail.owner.avatar_url}
               alt={`${repoDetail.owner.login}'s avatar`}
-              className="avatar"
+              className={styles.avatar}
             />
             <a
               href={repoDetail.owner.html_url}
@@ -43,19 +44,19 @@ const RepoDetail = () => {
               href={repoDetail.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="repo-name"
+              className={styles.repoName}
             >
               {repoDetail.name}
             </a>
-            <span className="visibility-badge">
+            <span className={styles.visibilityBadge}>
               {repoDetail.private ? "Private" : "Public"}
             </span>
           </div>
 
-          <div className="repo-actions">
+          <div className={styles.repoActions}>
             <a
               href={`${repoDetail.html_url}/fork`}
-              className="btn"
+              className={styles.btn}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -63,7 +64,7 @@ const RepoDetail = () => {
             </a>
             <a
               href={`${repoDetail.html_url}/stargazers`}
-              className="btn"
+              className={styles.btn}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -72,15 +73,15 @@ const RepoDetail = () => {
           </div>
         </header>
 
-        <div className="repo-description">
+        <div className={styles.repoDescription}>
           {repoDetail.description || "No description provided"}
         </div>
 
-        <div className="repo-meta">
+        <div className={styles.repoMeta}>
           {repoDetail.language && (
-            <span className="meta-item">
+            <span className={styles.metaItem}>
               <span
-                className="language-color"
+                className={styles.languageColor}
                 style={{
                   backgroundColor: getLanguageColor(repoDetail.language),
                 }}
@@ -91,7 +92,7 @@ const RepoDetail = () => {
 
           <a
             href={`${repoDetail.html_url}/forks`}
-            className="meta-item"
+            className={styles.metaItem}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -103,7 +104,7 @@ const RepoDetail = () => {
 
           <a
             href={`${repoDetail.html_url}/issues`}
-            className="meta-item"
+            className={styles.metaItem}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -114,7 +115,7 @@ const RepoDetail = () => {
           </a>
 
           {repoDetail.license && (
-            <span className="meta-item">
+            <span className={styles.metaItem}>
               <span role="img" aria-label="license">
                 📜
               </span>{" "}
@@ -122,13 +123,13 @@ const RepoDetail = () => {
             </span>
           )}
 
-          <span className="meta-item">
+          <span className={styles.metaItem}>
             Updated on {formatDate(repoDetail.pushed_at)}
           </span>
         </div>
 
         {repoDetail.homepage && (
-          <div className="repo-homepage">
+          <div className={styles.repoHomepage}>
             <a
               href={
                 repoDetail.homepage.startsWith("http")
@@ -147,12 +148,12 @@ const RepoDetail = () => {
         )}
 
         {repoDetail.topics && repoDetail.topics.length > 0 && (
-          <div className="repo-topics">
+          <div className={styles.repoTopics}>
             {repoDetail.topics.map((topic) => (
               <a
                 key={topic}
                 href={`https://github.com/topics/${topic}`}
-                className="topic-tag"
+                className={styles.topicTag}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -162,10 +163,10 @@ const RepoDetail = () => {
           </div>
         )}
 
-        <div className="repo-clone">
+        <div className={styles.repoClone}>
           <h3>Clone</h3>
-          <div className="clone-options">
-            <div className="clone-option">
+          <div className={styles.cloneOptions}>
+            <div className={styles.cloneOption}>
               <label>HTTPS</label>
               <input
                 type="text"
@@ -174,7 +175,7 @@ const RepoDetail = () => {
                 onClick={(e) => (e.target as HTMLInputElement).select()}
               />
             </div>
-            <div className="clone-option">
+            <div className={styles.cloneOption}>
               <label>SSH</label>
               <input
                 type="text"
