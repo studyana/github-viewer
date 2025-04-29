@@ -1,4 +1,4 @@
-.content-area {
+.contentArea {
   margin: auto;
   width: 70%;
   flex-grow: 1;
@@ -24,39 +24,39 @@
   text-decoration: underline;
 }
 
-.content-list {
+.contentList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
 }
 
-.content-item {
+.contentItem {
   padding: 10px;
   border: 1px solid #e1e4e8;
   border-radius: 6px;
   cursor: pointer;
 }
 
-.content-item:hover {
+.contentItem:hover {
   background-color: #f6f8fa;
 }
 
-.item-name {
+.itemName {
   margin-bottom: 5px;
 }
 
-.item-size {
+.itemSize {
   font-size: 12px;
   color: #586069;
 }
 
-.file-content {
+.fileContent {
   background-color: #f6f8fa;
   padding: 20px;
   border-radius: 6px;
 }
 
-.file-content pre {
+.fileContent pre {
   white-space: pre-wrap;
   word-wrap: break-word;
   margin: 0;
