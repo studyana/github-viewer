@@ -9,20 +9,34 @@ import formatDate from "@/utils/formatDate";
 const RepoDetail = () => {
   const { owner, repo } = useParams<{ owner: string; repo: string }>();
   const [repoDetail, setRepoDetail] = useState<GitHubRepoDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchrepoDetail = async () => {
       try {
         const data = await getRepoDetails(owner, repo);
         setRepoDetail(data);
       } catch (err) {
-        console.error(err);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Unknown error");
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchrepoDetail();
   }, [owner, repo]);
-  if (!repoDetail) {
+  if (isLoading) {
     return <div className={styles.loading}>Loading...</div>;
+  }
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
+  if (!repoDetail) {
+    return <div>No data found</div>;
   }
   return (
     <>
