@@ -2,6 +2,8 @@ import React from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { GitHubRepo } from "@/types/github";
+import { useState } from "react";
+import { getUserRepos } from "@/services/githubService";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -38,14 +40,29 @@ const columns: TableColumnsType<GitHubRepo> = [
   },
 ];
 
-interface RepoListProps {
-  repos: GitHubRepo[];
-}
-
-const RepoList: React.FC<RepoListProps> = ({ repos }) => {
+const RepoList: React.FC = () => {
+  const [data, setData] = useState<GitHubRepo[]>([]);
+  const [username, setUsername] = useState<string>("");
+  const handleSearch = async (username: string) => {
+    try {
+      const repos = await getUserRepos(username);
+      setData(repos);
+    } catch (error) {
+      console.error("Error fetching repos:", error);
+    }
+  };
   return (
     <>
-      <Table<GitHubRepo> columns={columns} dataSource={repos} />
+      <div>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter GitHub username"
+        />
+        <button onClick={() => handleSearch(username)}>搜索</button>
+      </div>
+      <Table<GitHubRepo> columns={columns} dataSource={data} />
     </>
   );
 };
