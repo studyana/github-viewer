@@ -53,7 +53,7 @@ const getRepoContents = async (
   path: string = ""
 ) => {
   try {
-    const response: AxiosResponse<RepoContentItem[]> = await axios.get(
+    const response: AxiosResponse<RepoContentItem[]> = await request.get(
       `/repos/${owner}/${repo}/contents/${path}`
     );
     return response.data;
@@ -64,7 +64,7 @@ const getRepoContents = async (
 
 const getFileContent = async (owner: string, repo: string, path: string) => {
   try {
-    const response: AxiosResponse<RepoFileContent> = await axios.get(
+    const response: AxiosResponse<RepoFileContent> = await request.get(
       `/repos/${owner}/${repo}/contents/${path}`
     );
     return response.data;
