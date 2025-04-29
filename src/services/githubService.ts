@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 import { GitHubRepo } from "@/types/github";
 import axios, { AxiosResponse } from "axios";
-
+import { GitHubRepoDetail } from "@/types/github";
 const getUserRepos = async (username: string) => {
   try {
     let allRepos: GitHubRepo[] = [];
@@ -35,6 +35,18 @@ const getUserRepos = async (username: string) => {
     throw handleError(error);
   }
 };
+const getRepoDetails = async (
+  owner: string | undefined,
+  name: string | undefined
+) => {
+  try {
+    const response = await request.get(`/repos/${owner}/${name}`);
+    const repoDetails: GitHubRepoDetail = response.data;
+    return repoDetails;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 //  错误处理函数
 const handleError = (error: unknown): Error => {
   if (axios.isAxiosError(error)) {
@@ -46,4 +58,4 @@ const handleError = (error: unknown): Error => {
   }
   return error instanceof Error ? error : new Error("Unknown error occurred");
 };
-export { getUserRepos };
+export { getUserRepos, getRepoDetails };
