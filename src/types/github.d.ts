@@ -89,6 +89,23 @@ export interface GitHubRepoDetail {
   subscribers_count?: number;
 }
 
+// 仓库内容项（文件/目录）
+export interface RepoContentItem {
+  type: "file" | "dir";
+  name: string;
+  path: string;
+  sha: string;
+  size?: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string | null;
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+}
 // API 错误响应
 export interface GitHubAPIError {
   message: string;
