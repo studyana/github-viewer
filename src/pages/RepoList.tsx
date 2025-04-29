@@ -4,6 +4,7 @@ import type { TableColumnsType } from "antd";
 import { GitHubRepo } from "@/types/github";
 import { useState } from "react";
 import { getUserRepos } from "@/services/githubService";
+import { useNavigate } from "react-router-dom";
 const columns: TableColumnsType<GitHubRepo> = [
   {
     title: "Repository Name",
@@ -41,6 +42,7 @@ const columns: TableColumnsType<GitHubRepo> = [
 ];
 
 const RepoList: React.FC = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState<GitHubRepo[]>([]);
   const [username, setUsername] = useState<string>("");
   const handleSearch = async (username: string) => {
@@ -62,7 +64,14 @@ const RepoList: React.FC = () => {
         />
         <button onClick={() => handleSearch(username)}>搜索</button>
       </div>
-      <Table<GitHubRepo> columns={columns} dataSource={data} />
+      <Table<GitHubRepo>
+        rowKey="id"
+        columns={columns}
+        dataSource={data}
+        onRow={(record) => ({
+          onClick: () => navigate(`/${record.owner.login}/${record.name}`),
+        })}
+      />
     </>
   );
 };
