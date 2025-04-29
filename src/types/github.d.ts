@@ -106,6 +106,20 @@ export interface RepoContentItem {
     html: string;
   };
 }
+
+// 文件内容
+export interface RepoFileContent {
+  type: "file";
+  encoding: "base64";
+  size: number;
+  name: string;
+  path: string;
+  content: string;
+  sha: string;
+  url: string;
+  html_url: string;
+  download_url: string | null;
+}
 // API 错误响应
 export interface GitHubAPIError {
   message: string;
