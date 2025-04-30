@@ -96,7 +96,7 @@ const getRepoContentsByRef = async (
 const getRepoBranch = async (owner: string, repo: string) => {
   try {
     const response: AxiosResponse<GitHubBranch[]> = await request.get(
-      `/repos/${owner}/${repo}/branches}`
+      `/repos/${owner}/${repo}/branches`
     );
     return response.data;
   } catch (error) {
