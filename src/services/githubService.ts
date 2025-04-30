@@ -1,5 +1,10 @@
 import request from "@/utils/request";
-import { GitHubRepo, RepoContentItem, RepoFileContent } from "@/types/github";
+import {
+  GitHubBranch,
+  GitHubRepo,
+  RepoContentItem,
+  RepoFileContent,
+} from "@/types/github";
 import axios, { AxiosResponse } from "axios";
 import { GitHubRepoDetail } from "@/types/github";
 const getUserRepos = async (username: string) => {
@@ -72,6 +77,32 @@ const getFileContent = async (owner: string, repo: string, path: string) => {
     throw handleError(error);
   }
 };
+
+const getRepoContentsByRef = async (
+  owner: string,
+  repo: string,
+  ref: string,
+  path: string = ""
+) => {
+  try {
+    const response: AxiosResponse<RepoContentItem[]> = await request.get(
+      `/repos/${owner}/${repo}/contents/${path}?ref=${ref}`
+    );
+    return response.data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
+const getRepoBranch = async (owner: string, repo: string) => {
+  try {
+    const response: AxiosResponse<GitHubBranch[]> = await request.get(
+      `/repos/${owner}/${repo}/branches`
+    );
+    return response.data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 //  错误处理函数
 const handleError = (error: unknown): Error => {
   if (axios.isAxiosError(error)) {
@@ -83,4 +114,11 @@ const handleError = (error: unknown): Error => {
   }
   return error instanceof Error ? error : new Error("Unknown error occurred");
 };
-export { getUserRepos, getRepoDetails, getRepoContents, getFileContent };
+export {
+  getUserRepos,
+  getRepoDetails,
+  getRepoContents,
+  getFileContent,
+  getRepoContentsByRef,
+  getRepoBranch,
+};

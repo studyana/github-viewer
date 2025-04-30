@@ -6,7 +6,7 @@ import { getRepoDetails } from "@/services/githubService";
 import styles from "./RepoDetail.module.css";
 import getLanguageColor from "@/utils/getLanguageColor";
 import formatDate from "@/utils/formatDate";
-import RepoContents from "@/components/repoContents";
+import RepoBranch from "@/components/RepoBranch";
 const RepoDetail = () => {
   const { owner, repo } = useParams<{ owner: string; repo: string }>();
   const [repoDetail, setRepoDetail] = useState<GitHubRepoDetail | null>(null);
@@ -204,7 +204,7 @@ const RepoDetail = () => {
           </div>
         </div>
       </div>
-      {repoDetail && <RepoContents repository={repoDetail} />}
+      <RepoBranch owner={owner || ""} repo={repo || ""} />
     </>
   );
 };
