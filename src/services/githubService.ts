@@ -89,7 +89,13 @@ const getRepoContentsByRef = async (
     const response: AxiosResponse<RepoContentItem[]> = await request.get(
       `/repos/${owner}/${repo}/contents/${path}?ref=${ref}`
     );
-    return response.data;
+    const data = response.data.sort((a, b) => {
+      if (a.type !== b.type) {
+        return a.type === "dir" ? -1 : 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+    return data;
   } catch (error) {
     throw handleError(error);
   }
