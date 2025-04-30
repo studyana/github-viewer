@@ -70,8 +70,16 @@ const RepoList: React.FC = () => {
     }
     setLoading(false);
   };
+  const handleLogout = () => {
+    clearRepos();
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <>
+      <div className={styles.logoutButton}>
+        <button onClick={() => handleLogout()}>logout</button>
+      </div>
       <div className={styles.searchSection}>
         <input
           type="text"
@@ -86,6 +94,7 @@ const RepoList: React.FC = () => {
           {loading ? "Loading..." : "Search"}
         </button>
       </div>
+
       {error && <div>Error: {error}</div>}
       {!error && (
         <Table<GitHubRepo>
