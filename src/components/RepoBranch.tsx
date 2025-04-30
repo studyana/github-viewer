@@ -10,6 +10,7 @@ import {
   getRepoContentsByRef,
   getRepoDetails,
   getRepoBranch,
+  getRepoCommit,
 } from "@/services/githubService";
 import styles from "./RepoBranch.module.css";
 interface GitHubRepoViewerProps {
@@ -69,8 +70,24 @@ const RepoBranch: React.FC<GitHubRepoViewerProps> = ({ owner, repo }) => {
 
     try {
       const response = await getRepoContentsByRef(owner, repo, branch, path);
+      const data = await Promise.all(
+        response.map(async (item) => {
+          const commit = await getRepoCommit(owner, repo, item.path, branch);
+          return {
+            ...item,
+            lastCommit: commit
+              ? {
+                  date: commit.commit.committer.date,
+                  message: commit.commit.message,
+                  author: commit.commit.author.name,
+                  url: commit.html_url,
+                }
+              : undefined,
+          };
+        })
+      );
 
-      setFiles(response);
+      setFiles(data);
       setCurrentPath(path);
       setFileContent(null); // 清除之前可能加载的文件内容
     } catch (err) {
@@ -189,6 +206,8 @@ const RepoBranch: React.FC<GitHubRepoViewerProps> = ({ owner, repo }) => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Commit Message</th>
+                <th>Last Commit</th>
                 <th>Size</th>
               </tr>
             </thead>
@@ -204,6 +223,37 @@ const RepoBranch: React.FC<GitHubRepoViewerProps> = ({ owner, repo }) => {
                       <button onClick={() => loadFile(file)}>
                         📄{file.name}
                       </button>
+                    )}
+                  </td>
+                  <td className="commitMessage">
+                    {file.lastCommit ? (
+                      <a
+                        href={file.lastCommit.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={file.lastCommit.message}
+                      >
+                        {file.lastCommit.message
+                          .split("\n")[0]
+                          .substring(0, 50)}
+                        {file.lastCommit.message.length > 50 ? "..." : ""}
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>
+                  <td>
+                    {file.lastCommit ? (
+                      <a
+                        href={file.lastCommit.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {new Date(file.lastCommit.date).toLocaleString()} by{" "}
+                        {file.lastCommit.author}
+                      </a>
+                    ) : (
+                      "N/A"
                     )}
                   </td>
                   <td style={{ fontFamily: "monospace" }}>

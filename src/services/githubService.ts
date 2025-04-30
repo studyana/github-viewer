@@ -4,6 +4,7 @@ import {
   GitHubRepo,
   RepoContentItem,
   RepoFileContent,
+  RepoCommit,
 } from "@/types/github";
 import axios, { AxiosResponse } from "axios";
 import { GitHubRepoDetail } from "@/types/github";
@@ -103,6 +104,30 @@ const getRepoBranch = async (owner: string, repo: string) => {
     throw handleError(error);
   }
 };
+
+const getRepoCommit = async (
+  owner: string,
+  repo: string,
+  path: string,
+  selectedBranch: string
+) => {
+  try {
+    const response = await request.get<RepoCommit[]>(
+      `https://api.github.com/repos/${owner}/${repo}/commits`,
+      {
+        params: {
+          path: path,
+          sha: selectedBranch,
+          per_page: 1,
+        },
+      }
+    );
+    return response.data[0] || null;
+  } catch (err) {
+    console.error(`Failed to fetch commit for ${path}:`, err);
+    return null;
+  }
+};
 //  错误处理函数
 const handleError = (error: unknown): Error => {
   if (axios.isAxiosError(error)) {
@@ -121,4 +146,5 @@ export {
   getFileContent,
   getRepoContentsByRef,
   getRepoBranch,
+  getRepoCommit,
 };
