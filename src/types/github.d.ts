@@ -27,6 +27,8 @@ export interface GitHubRepo {
   created_at: string;
   updated_at: string;
   pushed_at: string;
+  default_branch: string;
+  branches_url: string;
 }
 // GitHub 仓库详细信息
 export interface GitHubRepoDetail {
@@ -84,9 +86,10 @@ export interface GitHubRepoDetail {
   forks: number;
   open_issues: number;
   watchers: number;
-  default_branch: string;
   network_count?: number;
   subscribers_count?: number;
+  default_branch: string;
+  branches_url: string;
 }
 
 // 仓库内容项（文件/目录）
@@ -119,6 +122,15 @@ export interface RepoFileContent {
   url: string;
   html_url: string;
   download_url: string | null;
+}
+//分支内容
+export interface GitHubBranch {
+  name: string;
+  commit: {
+    sha: string;
+    url: string;
+  };
+  protected: boolean;
 }
 // API 错误响应
 export interface GitHubAPIError {
