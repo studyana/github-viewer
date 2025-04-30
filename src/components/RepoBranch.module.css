@@ -1,91 +1,119 @@
 .githubRepoViewer {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .repoHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e1e4e8;
-  }
-  
-  .branchSelector select {
-    padding: 5px 10px;
-    border-radius: 6px;
-    border: 1px solid #e1e4e8;
-  }
-  
-  .breadcrumbs {
-    margin-bottom: 15px;
-  }
-  
-  .breadcrumbs button {
-    background: none;
-    border: none;
-    color: #0366d6;
-    cursor: pointer;
-    padding: 0;
-    margin: 0 2px;
-  }
-  
-  .breadcrumbs button:hover {
-    text-decoration: underline;
-  }
-  
-  .breadcrumbs button:disabled {
-    color: #586069;
-    cursor: default;
-    text-decoration: none;
-  }
-  
-  .directoryListing table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .directoryListing th, .directoryListing td {
-    padding: 8px 12px;
-    text-align: left;
-    border-bottom: 1px solid #e1e4e8;
-  }
-  
-  .directoryListing button {
-    background: none;
-    border: none;
-    color: #0366d6;
-    cursor: pointer;
-    padding: 0;
-    text-align: left;
-  }
-  
-  .directoryListing button:hover {
-    text-decoration: underline;
-  }
-  
-  .fileContent pre {
-    background-color: #f6f8fa;
-    padding: 16px;
-    border-radius: 6px;
-    overflow-x: auto;
-  }
-  
-  .loading, .error {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 6px;
-  }
-  
-  .loading {
-    background-color: #f3f4f6;
-    color: #24292e;
-  }
-  
-  .error {
-    background-color: #ffebee;
-    color: #d32f2f;
-  }
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.repoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.branchSelector select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #e1e4e8;
+}
+
+.breadcrumbs {
+  margin-bottom: 15px;
+}
+
+.breadcrumbs button {
+  background: none;
+  border: none;
+  color: #0366d6;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 2px;
+}
+
+.breadcrumbs button:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs button:disabled {
+  color: #586069;
+  cursor: default;
+  text-decoration: none;
+}
+
+.directoryListing table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.directoryListing th,
+.directoryListing td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.directoryListing button {
+  background: none;
+  border: none;
+  color: #0366d6;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.directoryListing button:hover {
+  text-decoration: underline;
+}
+/* GitHubRepoViewer.css */
+/* 保留之前的样式并添加以下内容 */
+
+.directory-listing th,
+.directory-listing td {
+  padding: 8px 12px;
+  vertical-align: top;
+}
+
+.commitMessage {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.commitMessage a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.commitMMessage a:hover {
+  text-decoration: underline;
+}
+
+.fileContent pre {
+  background-color: #f6f8fa;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.loading,
+.error {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.loading {
+  background-color: #f3f4f6;
+  color: #24292e;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #d32f2f;
+}

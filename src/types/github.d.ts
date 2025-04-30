@@ -108,6 +108,12 @@ export interface RepoContentItem {
     git: string;
     html: string;
   };
+  lastCommit?: {
+    date: string;
+    message: string;
+    author: string;
+    url: string;
+  };
 }
 
 // 文件内容
@@ -131,6 +137,25 @@ export interface GitHubBranch {
     url: string;
   };
   protected: boolean;
+}
+
+// 仓库提交信息
+export interface RepoCommit {
+  sha: string;
+  commit: {
+    author: {
+      name: string;
+      email: string;
+      date: string;
+    };
+    committer: {
+      name: string;
+      email: string;
+      date: string;
+    };
+    message: string;
+  };
+  html_url: string;
 }
 // API 错误响应
 export interface GitHubAPIError {
